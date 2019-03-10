@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./favicon.ico">
+    <link rel="icon" type="image/png" href="./favicon.ico">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Simple Smart Contract Inventory Management </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <link href="bootstrap.min.css" rel="stylesheet" />
+  <link href="gaia.css" rel="stylesheet"/>
+</head>
+
+<body>
+
+      <div class="modal fade" id="confirmationdailog" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog "  style="width: 300px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+        <h4 class="modal-title" id="exampleModalLabel">Verify Transaction</h4>
+      </div>
+       <div class="modal-body"style="width: 100%;height: 200px">
+         <div class="form-group" > 
+                <div id="confirmationloader" style="display: flex;justify-content: center " style="width: 100%"></div>
+                <div id="message" style="display: flex;justify-content: center;margin-bottom: 10px "></div>
+                 <div  style="display: flex;justify-content: center ">
+                <button class="btn btn-private"  id="proceed" >Proceed</button>
+                   <button class="btn btn-danger"  id="cancel" >Cancel</button>
+                 </div>
+              
+           </div>
+            
+      </div>      
+      
+    </div>
+  </div>
+</div>
+    <nav class="navbar navbar-default navbar-transparent navbar-fixed-top" color-on-scroll="200">
+        <!-- if you want to keep the navbar hidden you can add this class to the navbar "navbar-burger"-->
+        <div class="container">
+            <div class="navbar-header">
+                <button id="menu-toggle" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar bar1"></span>
+                    <span class="icon-bar bar2"></span>
+                    <span class="icon-bar bar3"></span>
+                </button>
+                <a href="#" class="navbar-brand" style="color: black">
+                
+                   Simple Etheruem Inventory management DApp
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right navbar-uppercase">
+                   
+                    
+                    <li>
+                      
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+    </nav>
+
+
+    <div class="section section-header">
+        <div class="parallax  ">
+            <div class="image"
+                style="">
+            </div>
+            <div class="container">
+                <div class="content">
+                    <div class="title-area">
+                       <div class="row">
+                        <div class="col-md-3 px-1" style="margin-right: : 10px" >
+                        <ul class="list-group" style="margin-top: 10px"> 
+                          <li class="list-group-item list-group-item-heading list-group-item-danger" style="color: black">Menu</li>
+                       <li class="btn list-group-item " style="color: black" onclick="openCreateorderwindow()"> Add Product and Inventory</li>
+                  <li class="btn list-group-item " style="color: black" onclick="openViewproductwindow()">View Products</li>
+                   <li class="btn list-group-item " style="color: black" onclick="openViewInventorywindow()">View Inventores</li>      
+                   <li class="btn list-group-item " style="color: black" onclick="openViewOrderwindow()">View Orders</li>
+                   <li class="btn list-group-item " style="color: black" onclick="openViewTranshistorywindow()">View Transaction History</li>
+                   
+            </ul>
+                        </div>
+                         <div class="col-md-1 px-1" ></div>
+                         <div class="col-md-8 px-1" >
+                         <div class="row" id="view" style="display: none">
+                            <H3 style="color: black" id='viewtitle'>Prodct List</H3>
+                       
+                             <div class="row" id="viewbody" >
+                             </div>
+                        </div>
+                         <div class="row" id="createp" style="display: inline">
+                        <H3 style="color: black">Add Product and Inventory</H3>
+                       
+                        <div class="row"  >
+                             <div class="col-md-6 px-1" >
+                              <input id="productname" type="text" class="form-control" style="width: 100%" placeholder="Product Name"/>
+                              <input id="sku" type="textr" class="form-control" style="width: 100%" placeholder="SKU e.g GUCCI-LT-RD-34"/>
+                               <input id="stockquantity" type="number" class="form-control" style="width: 100%" placeholder="Stock Quantity"/>
+                              <input id="reorderpoint" type="number" class="form-control" style="width: 100%" placeholder="Reorder Point"/>
+                             </div>
+                             <div class="col-md-6 px-1" >
+                                
+                              <input id="color" type="text" class="form-control" style="width: 100%" placeholder="Product Color"/>
+                              <input id="size" type="text" class="form-control" style="width: 100%" placeholder="Product size"/>
+                                <input id="price" type="number" class="form-control" style="width: 100%" placeholder="Price"/>
+                               <button id="add" class="btn btn-danger btn-fill">Add Product</button> 
+                              
+                             </div>
+                             
+                           </div>
+                        </div>
+                         <div class="row" id="createo" style="display: none">
+                        <H3 style="color: black">Create Order</H3>
+                       <h4 id="totalquantity" style="width:100%;text-align:center;color: black"></h4>
+                        <div class="row"  >
+                             <div class="col-md-6 px-1" >
+                              <h4 id="oproductname" type="text" class="form-control" style="width: 100%" >Product Name</h4>
+                              <h4 id="osku" type="number" class="form-control" style="width: 100%" >SKU e.g GUCCI-LT-RD-34"</h4>
+                               <input id="ostockquantity" type="number" class="form-control" style="width: 100%" placeholder="Stock Quantity"/>
+                              
+                              
+                             </div>
+                             <div class="col-md-6 px-1" >
+                                
+                              <h4 id="oprice" type="text" class="form-control" style="width: 100%" >50 dollar</h4>
+                              <select id="ordertype" type="text" class="form-control" style="width: 100%" >
+                                <option>Sell Order</option>
+                                <option>Restock Order</option>
+                              </select> 
+                        
+                               <button id="createorder" class="btn btn-danger btn-fill">Add Order</button> 
+                              
+                             </div>
+                             
+                           </div>
+                        </div>
+                        </div>
+                       </div>
+
+
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+   
+
+
+  
+
+
+    <footer class="footer footer-big footer-color-black" data-color="black">
+        <div class="container">
+           
+            <hr>
+            <div class="copyright">
+                 © <script> document.write(new Date().getFullYear()) </script> Nwobodo Emeka
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+<!--   core js files    -->
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="js/web3.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script src="js/heartcode-canvasloader-min.js"></script> 
+
+
+</html>
